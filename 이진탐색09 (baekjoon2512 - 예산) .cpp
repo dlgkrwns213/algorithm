@@ -6,43 +6,39 @@ using namespace std;
 
 int main()
 {
-	cin.tie(NULL);
-	cout.tie(NULL);
-	ios_base::sync_with_stdio(false);
-
 	int n;
 	cin >> n;
-	int card[n];
+	int money[n];
 	for(int i=0;i<n;i++)
-		cin >> card[i];
-
-	sort(card, card+n);
+		cin >> money[i];
+	sort(money, money+n);
 
 	int m;
 	cin >> m;
-	while(m--)
+
+	int first = 0;
+	int last = money[n-1];
+	int ptr = 0;
+	while(first<=last)
 	{
-		int give;
-		cin >> give;
-		int first = 0;
-		int last = n-1;
-		bool find = false;
-		while(first<=last)
+		int mid = (first+last)/2;
+		int count = 0;
+		for(int i=0;i<n;i++)
 		{
-			int mid = (first+last)/2;
-			if(card[mid]<give)
-				first = mid+1;
-			else if(card[mid]>give)
-				last = mid-1;
+			if(money[i]<=mid)
+				count += money[i];
 			else
-			{
-				cout << 1 << " ";
-				find = true;
-				break;
-			}
+				count += mid;
 		}
-		if(!find)
-			cout << 0 << " ";
+
+		if(count<=m)
+		{
+			ptr = max(ptr, mid);
+			first = mid+1;
+		}
+		else
+			last = mid-1;
 	}
+	cout << ptr;
 	return 0;
 }
